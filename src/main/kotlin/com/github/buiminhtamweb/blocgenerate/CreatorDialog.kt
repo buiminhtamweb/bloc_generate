@@ -9,6 +9,7 @@ import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBTextField
 import java.awt.Dimension
 import java.awt.Font
+import java.util.*
 import javax.swing.GroupLayout
 import javax.swing.JComponent
 import javax.swing.JPanel
@@ -172,10 +173,11 @@ class CreatorDialog(basePackageName: String) : DialogWrapper(true) {
 //        return
 //      }
 //    }
-
+        var classNameCamelCase =
+            className.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
         _generatorConfig = generatorConfig.copy(
             packageName = packageName,
-            className = className,
+            className = classNameCamelCase,
 //            addDependencyEnabled = addDependencyEnabled,
             mobiusComponents = components
         )

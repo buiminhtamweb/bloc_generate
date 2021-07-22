@@ -2,8 +2,9 @@ package com.github.buiminhtamweb.blocgenerate.codegen
 
 import com.github.buiminhtamweb.blocgenerate.model.FileModel
 import com.github.buiminhtamweb.blocgenerate.model.GeneratorConfig
-import com.github.buiminhtamweb.blocgenerate.util.toCamelCase
+import com.github.buiminhtamweb.blocgenerate.util.snakeToLowerCamelCase
 import com.github.buiminhtamweb.blocgenerate.util.toSnakeCase
+import java.util.*
 
 object RouteGenerator : FileGenerator {
 
@@ -16,7 +17,7 @@ object RouteGenerator : FileGenerator {
 
         val blocClassName = generatorConfig.className + "Bloc"
         val blocFileName = generatorConfig.className.toSnakeCase() + "_bloc"
-        val blocVariName = blocFileName.toCamelCase()
+        val blocVariName = blocClassName.snakeToLowerCamelCase();
 
         val routeContent = "" +
                 "import 'package:flutterbaseproject/repo/user_repo.dart';\n" +
