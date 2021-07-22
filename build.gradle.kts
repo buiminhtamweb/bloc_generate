@@ -28,6 +28,14 @@ repositories {
 }
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("com.squareup:kotlinpoet:1.5.0")
+    testImplementation("com.google.truth:truth:1.0.1")
+    implementation("com.android.tools:sdk-common:25.3.0")
+    implementation("com.android.tools:sdklib:25.3.0")
+
+
+
 }
 
 // Configure gradle-intellij-plugin plugin.

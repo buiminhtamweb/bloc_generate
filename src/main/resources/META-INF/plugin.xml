@@ -7,13 +7,15 @@
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.buiminhtamweb.blocgenerate.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.buiminhtamweb.blocgenerate.services.MyProjectService"/>
-    </extensions>
 
-    <applicationListeners>
-        <listener class="com.github.buiminhtamweb.blocgenerate.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
+    <actions>
+        <!-- Add your actions here -->
+        <action class="com.github.buiminhtamweb.blocgenerate.CreatorAction" description="Create Bloc" id="com.github.buiminhtamweb.blocgenerate.CreatorAction"
+                text="Create Bloc">
+            <add-to-group anchor="after" group-id="NewGroup" relative-to-action="NewFromTemplate" />
+        </action>
+    </actions>
+
+
+
 </idea-plugin>
