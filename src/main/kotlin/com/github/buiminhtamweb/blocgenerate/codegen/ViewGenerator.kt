@@ -7,6 +7,8 @@ import com.github.buiminhtamweb.blocgenerate.util.toSnakeCase
 object ViewGenerator : FileGenerator {
 
     override fun generate(generatorConfig: GeneratorConfig): FileModel {
+        val pakageName = generatorConfig.packageName
+
         val className = generatorConfig.className + "View"
         val fileName = generatorConfig.className.toSnakeCase() + "_view"
 
@@ -15,7 +17,7 @@ object ViewGenerator : FileGenerator {
 
         val viewContent = "" +
                 "import 'package:flutter/material.dart';\n" +
-                "import 'package:flutterbaseproject/base/base_state_bloc.dart';\n" +
+                "import 'package:" + pakageName + "/base/base_state_bloc.dart';\n" +
                 "\n" +
                 "import '" + blocFileName + ".dart';\n" +
                 "\n" +

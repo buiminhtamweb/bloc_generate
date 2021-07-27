@@ -19,9 +19,10 @@ class CreatorDialog(basePackageName: String) : DialogWrapper(true) {
     val generatorConfig: GeneratorConfig
         get() = _generatorConfig
 
-//    private val packageNameTextField = JBTextField(generatorConfig.packageName)
+    private val packageNameTextField = JBTextField(basePackageName)
     private val classNameTextField = JBTextField()
 
+//    val basePackageName = basePackageName;
 //    private val dependencyCheckBox = JBCheckBox("Add dependencies", false)
     private val modelComponentCheckBox = JBCheckBox("Bloc", true)
     private val eventComponentCheckBox = JBCheckBox("Route", true)
@@ -82,7 +83,7 @@ class CreatorDialog(basePackageName: String) : DialogWrapper(true) {
             .addGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(packageNameLabel)
-//                    .addComponent(packageNameTextField)
+                    .addComponent(packageNameTextField)
             )
             .addGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -117,7 +118,7 @@ class CreatorDialog(basePackageName: String) : DialogWrapper(true) {
                     )
                     .addGroup(
                         layout.createParallelGroup()
-//                            .addComponent(packageNameTextField)
+                            .addComponent(packageNameTextField)
                             .addComponent(classNameTextField)
                     )
             )
@@ -135,7 +136,7 @@ class CreatorDialog(basePackageName: String) : DialogWrapper(true) {
 
     @OptIn(ExperimentalStdlibApi::class)
     override fun doOKAction() {
-        val packageName = ""
+        val packageName = packageNameTextField.text.orEmpty()
         val className = classNameTextField.text.orEmpty()
 //        val addDependencyEnabled = dependencyCheckBox.isSelected
         val components = mutableListOf<MobiusComponent>()
@@ -153,27 +154,17 @@ class CreatorDialog(basePackageName: String) : DialogWrapper(true) {
             return
         }
 
+        if (packageName.isBlank()) {
+            showErrorMessage("Package name should not be empty")
+            return
+        }
+
         if (components.isEmpty()) {
             showErrorMessage("Select at least one component to generate the code")
             return
         }
 
-//    if (components.contains(MobiusComponent.Update)) {
-//      if (components.contains(MobiusComponent.Model).not() || components.contains(MobiusComponent.Event).not()) {
-//        showErrorMessage("Model & Event are necessary to generate Update")
-//        return
-//      }
-//    }
-//
-//    if (components.contains(MobiusComponent.EffectHandler)) {
-//      if (components.contains(MobiusComponent.Model).not() ||
-//        components.contains(MobiusComponent.Event).not() ||
-//        components.contains(MobiusComponent.Effect).not()
-//      ) {
-//        showErrorMessage("Model, Event & Effect are necessary to generate EffectHandler")
-//        return
-//      }
-//    }
+
         var classNameCamelCase =
             className.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
         _generatorConfig = generatorConfig.copy(

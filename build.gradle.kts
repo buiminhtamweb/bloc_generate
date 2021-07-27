@@ -34,9 +34,15 @@ dependencies {
     testImplementation("com.google.truth:truth:1.0.1")
     implementation("com.android.tools:sdk-common:25.3.0")
     implementation("com.android.tools:sdklib:25.3.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
 
 
 
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion(11)
+    targetCompatibility = JavaVersion.toVersion(11)
 }
 
 // Configure gradle-intellij-plugin plugin.

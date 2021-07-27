@@ -9,6 +9,8 @@ import java.util.*
 object RouteGenerator : FileGenerator {
 
     override fun generate(generatorConfig: GeneratorConfig): FileModel {
+        val pakageName = generatorConfig.packageName
+
         val className = generatorConfig.className + "Route"
         val fileName = generatorConfig.className.toSnakeCase() + "_route"
         val variName = className.snakeToLowerCamelCase();
@@ -21,7 +23,7 @@ object RouteGenerator : FileGenerator {
         val blocVariName = blocClassName.snakeToLowerCamelCase();
 
         val routeContent = "" +
-                "import 'package:flutterbaseproject/repo/user_repo.dart';\n" +
+                "import 'package:" + pakageName + "/repo/user_repo.dart';\n" +
                 "import 'package:provider/provider.dart';\n" +
                 "\n" +
                 "import '" + blocFileName + ".dart';\n" +

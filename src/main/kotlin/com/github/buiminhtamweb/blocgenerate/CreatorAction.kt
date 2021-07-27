@@ -20,9 +20,10 @@ import com.intellij.psi.impl.file.PsiDirectoryFactory
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.PlatformIcons
-import com.jetbrains.lang.dart.util.PubspecYamlUtil
 import com.jetbrains.lang.dart.util.PubspecYamlUtil.PUBSPEC_YAML
+import org.yaml.snakeyaml.Yaml
 import java.io.File
+import java.io.InputStream
 
 
 class CreatorAction : AnAction() {
@@ -32,17 +33,9 @@ class CreatorAction : AnAction() {
         val project = event.getData(CommonDataKeys.PROJECT) ?: return
         val directory = DirectoryChooserUtil.getOrChooseDirectory(view) ?: return
 
-//    val isPackage = PsiDirectoryFactory.getInstance(project).isPackage(directory)
-//    if (isPackage.not()) return
-
         val packageRoot = getPackageRoot(project, directory)
-//        val basePackageName = buildBasePackageName(packageRoot, directory)
-
         val basePackageName = getProjectDartName(project);
-
-
         val rootPackagePath = packageRoot.virtualFile.path
-
 
         val dialog = CreatorDialog(basePackageName)
         if (dialog.showAndGet()) {
@@ -61,30 +54,14 @@ class CreatorAction : AnAction() {
         val pubspecYamlFiles: Collection<VirtualFile> = FilenameIndex.getVirtualFilesByName(
             project, PUBSPEC_YAML, GlobalSearchScope.projectScope(project)
         )
-        val fileIndex = ProjectRootManager.getInstance(project).fileIndex
 
         for (pubspecFile in pubspecYamlFiles) {
-//            val dotPackagesFile = pubspecFile.parent.findChild(DotPackagesFileUtil.DOT_PACKAGES)
-//            val module = if (dotPackagesFile == null) null else fileIndex.getModuleForFile(dotPackagesFile)
 
-//            if (PubspecYamlUtil.isPubspecFile(pubspecFile)) {
-                return PubspecYamlUtil.getDartProjectName(pubspecFile).toString();
-//            }
+            val yaml = Yaml()
+            val obj: Map<String, Any> = yaml.load(pubspecFile.inputStream)
 
-
-//            if (dotPackagesFile != null && !dotPackagesFile.isDirectory
-//                && module != null
-////                && DartSdkGlobalLibUtil.isDartSdkEnabled(module)
-//            ) {
-//                val packagesMap = DotPackagesFileUtil.getPackagesMap(dotPackagesFile)
-//                if (packagesMap != null) {
-//                    for ((packageName, packagePath) in packagesMap) {
-//                        if (isPathOutsideProjectContent(fileIndex, packagePath)) {
-//                            libInfo.addPackage(packageName, packagePath)
-//                        }
-//                    }
-//                }
-//            }
+            print(obj);
+            return obj.get("name").toString();
         }
         return "";
     }
