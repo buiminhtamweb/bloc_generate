@@ -26,6 +26,7 @@ version = properties("pluginVersion")
 repositories {
     mavenCentral()
 }
+
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -107,9 +108,9 @@ tasks {
         changeNotes.set(provider { changelog.getLatest().toHTML() })
     }
 
-    runPluginVerifier {
-        ideVersions.set(properties("pluginVerifierIdeVersions").split(',').map(String::trim).filter(String::isNotEmpty))
-    }
+//    runPluginVerifier {
+//        ideVersions.set(properties("pluginVerifierIdeVersions").split(',').map(String::trim).filter(String::isNotEmpty))
+//    }
 
     publishPlugin {
         dependsOn("patchChangelog")

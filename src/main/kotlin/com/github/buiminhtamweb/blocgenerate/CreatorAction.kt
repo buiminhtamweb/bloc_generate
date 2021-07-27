@@ -12,11 +12,18 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.impl.file.PsiDirectoryFactory
+import com.intellij.psi.search.FilenameIndex
+import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.PlatformIcons
+import com.jetbrains.lang.dart.util.PubspecYamlUtil
+import com.jetbrains.lang.dart.util.PubspecYamlUtil.PUBSPEC_YAML
 import java.io.File
+
 
 class CreatorAction : AnAction() {
 
@@ -29,8 +36,13 @@ class CreatorAction : AnAction() {
 //    if (isPackage.not()) return
 
         val packageRoot = getPackageRoot(project, directory)
-        val basePackageName = buildBasePackageName(packageRoot, directory)
+//        val basePackageName = buildBasePackageName(packageRoot, directory)
+
+        val basePackageName = getProjectDartName(project);
+
+
         val rootPackagePath = packageRoot.virtualFile.path
+
 
         val dialog = CreatorDialog(basePackageName)
         if (dialog.showAndGet()) {
@@ -42,6 +54,39 @@ class CreatorAction : AnAction() {
                     project
                 )
         }
+    }
+
+    private fun getProjectDartName(project: Project): String {
+
+        val pubspecYamlFiles: Collection<VirtualFile> = FilenameIndex.getVirtualFilesByName(
+            project, PUBSPEC_YAML, GlobalSearchScope.projectScope(project)
+        )
+        val fileIndex = ProjectRootManager.getInstance(project).fileIndex
+
+        for (pubspecFile in pubspecYamlFiles) {
+//            val dotPackagesFile = pubspecFile.parent.findChild(DotPackagesFileUtil.DOT_PACKAGES)
+//            val module = if (dotPackagesFile == null) null else fileIndex.getModuleForFile(dotPackagesFile)
+
+//            if (PubspecYamlUtil.isPubspecFile(pubspecFile)) {
+                return PubspecYamlUtil.getDartProjectName(pubspecFile).toString();
+//            }
+
+
+//            if (dotPackagesFile != null && !dotPackagesFile.isDirectory
+//                && module != null
+////                && DartSdkGlobalLibUtil.isDartSdkEnabled(module)
+//            ) {
+//                val packagesMap = DotPackagesFileUtil.getPackagesMap(dotPackagesFile)
+//                if (packagesMap != null) {
+//                    for ((packageName, packagePath) in packagesMap) {
+//                        if (isPathOutsideProjectContent(fileIndex, packagePath)) {
+//                            libInfo.addPackage(packageName, packagePath)
+//                        }
+//                    }
+//                }
+//            }
+        }
+        return "";
     }
 
     override fun update(event: AnActionEvent) {
@@ -133,6 +178,7 @@ class CreatorAction : AnAction() {
 //    }
 //  }
 
+
     private fun getPackageRoot(project: Project, selectedDirectory: PsiDirectory): PsiDirectory {
         val directoryFactory = PsiDirectoryFactory.getInstance(project)
         var directory = selectedDirectory
@@ -158,4 +204,13 @@ class CreatorAction : AnAction() {
     companion object {
         private const val DELIMITER = "."
     }
+
+//    fun getDartProjectName(pubspecYamlFile: VirtualFile): String? {
+//        if (pubspecYamlFile == null) {
+//           return ""
+//        }
+//        val yamlInfo = PubspecYamlUtil.getPubspecYamlInfo(pubspecYamlFile)
+//        val name = yamlInfo?.get("name")
+//        return if (name is String) name else null
+//    }
 }

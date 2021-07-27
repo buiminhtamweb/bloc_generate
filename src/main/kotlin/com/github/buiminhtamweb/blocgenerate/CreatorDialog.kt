@@ -133,6 +133,7 @@ class CreatorDialog(basePackageName: String) : DialogWrapper(true) {
 //      .addComponent(effectHandlerComponentCheckBox)
     }
 
+    @OptIn(ExperimentalStdlibApi::class)
     override fun doOKAction() {
         val packageName = ""
         val className = classNameTextField.text.orEmpty()
