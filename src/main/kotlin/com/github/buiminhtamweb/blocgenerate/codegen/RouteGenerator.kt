@@ -11,6 +11,7 @@ object RouteGenerator : FileGenerator {
     override fun generate(generatorConfig: GeneratorConfig): FileModel {
         val className = generatorConfig.className + "Route"
         val fileName = generatorConfig.className.toSnakeCase() + "_route"
+        val variName = className.snakeToLowerCamelCase();
 
         val viewClassName = generatorConfig.className + "View"
         val viewFileName = generatorConfig.className.toSnakeCase() + "_view"
@@ -26,7 +27,7 @@ object RouteGenerator : FileGenerator {
                 "import '" + blocFileName + ".dart';\n" +
                 "import '" + viewFileName + ".dart';\n" +
                 "\n" +
-                "var homeRoute = ProxyProvider<UserRepo, " + blocClassName + ">(\n" +
+                "var " + variName + " = ProxyProvider<UserRepo, " + blocClassName + ">(\n" +
                 "  create: (context) {\n" +
                 "    " + blocClassName + " " + blocVariName + " = " + blocClassName + "(\n" +
                 "        userRepo: Provider.of<UserRepo>(context, listen: false));\n" +
