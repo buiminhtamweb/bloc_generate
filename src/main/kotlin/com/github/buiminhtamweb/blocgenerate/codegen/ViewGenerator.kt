@@ -27,6 +27,17 @@ object ViewGenerator : FileGenerator {
                 "}\n" +
                 "\n" +
                 "class _" + className + "State extends BaseStateBloc<" + className + ", " + blocClassName + "> {\n" +
+                "\n" +
+                "  @override\n" +
+                "  void dispose() {\n" +
+                "    super.dispose();\n" +
+                "  }\n" +
+                "\n" +
+                "  @override\n" +
+                "  void initState() {\n" +
+                "    \n" +
+                "  }" +
+                "\n" +
                 "  @override\n" +
                 "  Widget build(BuildContext context) {\n" +
                 "    return Scaffold(\n" +
